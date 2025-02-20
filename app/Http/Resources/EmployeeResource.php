@@ -14,12 +14,12 @@ class EmployeeResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'full_name' => $this->full_name, 
             'email' => $this->email,
             'area' => $this->area,
             'category' => $this->category,
             'company' => [
-                'name' => $this->company->name ?? 'N/A',
+                'name' => $this->company ?? 'N/A',
                 'logo' => $this->company->logo ?? null,
             ],
             'satisfaction_level' => $this->satisfaction_level,

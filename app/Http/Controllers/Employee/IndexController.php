@@ -14,8 +14,8 @@ class IndexController
         $this->employeeRepository = $employeeRepository;
     }
 
-    public function __invoke(): JsonResponse
+    public function __invoke()
     {
-        return response()->json($this->employeeRepository->getAllEmployees());
+        return $this->employeeRepository->getAllEmployees();
     }
 }
