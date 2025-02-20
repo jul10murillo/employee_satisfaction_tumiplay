@@ -37,6 +37,35 @@ class EmployeeRepository implements EmployeeRepositoryInterface
         return $this->formatPaginationResponse($employees);
     }
 
+    public function getFavorites(): array
+    {
+        $favorites = Cache::get('favorites', []);
+        return [
+            'data' => EmployeeResource::collection(Employee::whereIn('id', $favorites)->get()),
+            'count' => count($favorites),
+        ];
+    }
+
+    public function addFavorite(int $employeeId): array
+    {
+        $favorites = Cache::get('favorites', []);
+
+        if (!in_array($employeeId, $favorites)) {
+            $favorites[] = $employeeId;
+            Cache::put('favorites', $favorites, now()->addDays(7)); // Expira en 7 días
+        }
+
+        return ['message' => 'Empleado añadido a favoritos', 'favorites' => $favorites];
+    }
+
+    public function removeFavorite(int $employeeId): array
+    {
+        $favorites = array_filter(Cache::get('favorites', []), fn($id) => $id !== $employeeId);
+        Cache::put('favorites', $favorites, now()->addDays(7));
+
+        return ['message' => 'Empleado eliminado de favoritos', 'favorites' => $favorites];
+    }
+
 
     /**
      * Format the pagination response from Laravel's LengthAwarePaginator.
