@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\CompanyResource;
 
 class EmployeeResource extends JsonResource
 {
@@ -18,10 +19,7 @@ class EmployeeResource extends JsonResource
             'email' => $this->email,
             'area' => $this->area,
             'category' => $this->category,
-            'company' => [
-                'name' => $this->company ?? 'N/A',
-                'logo' => $this->company->logo ?? null,
-            ],
+            'company' => new CompanyResource($this->whenLoaded('company')),
             'satisfaction_level' => $this->satisfaction_level,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),

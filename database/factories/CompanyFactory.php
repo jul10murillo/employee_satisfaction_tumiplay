@@ -17,9 +17,12 @@ class CompanyFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = \Faker\Factory::create();
+        $faker->addProvider(new \Smknstd\FakerPicsumImages\FakerPicsumImagesProvider($faker));
+
         return [
             'name' => $this->faker->company,
-            'logo' => $this->faker->imageUrl(200, 200, 'business', true, 'Company Logo'),
+            'logo' => $faker->imageUrl(width: 100,height: 100),
         ];
     }
 }

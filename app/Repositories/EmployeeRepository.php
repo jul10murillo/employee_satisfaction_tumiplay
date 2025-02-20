@@ -27,13 +27,13 @@ class EmployeeRepository implements EmployeeRepositoryInterface
 
     public function searchEmployees(array $filters): AnonymousResourceCollection
     {
-        $query = $this->model->query();
+        $query = $this->model->with('company'); // 🔹 Asegurar que carga la relación
         foreach ($filters as $key => $value) {
             $query->where($key, 'LIKE', "%$value%");
         }
 
         $employees = $query->paginate(5);
-
+        //dd($employees->toArray());
         return $this->formatPaginationResponse($employees);
     }
 
@@ -75,6 +75,7 @@ class EmployeeRepository implements EmployeeRepositoryInterface
      */
     private function formatPaginationResponse(LengthAwarePaginator $employees): AnonymousResourceCollection
     {
+        //dd($employees->toArray());
         return EmployeeResource::collection($employees)->additional([
             'pagination' => [
                 'total' => $employees->total(),

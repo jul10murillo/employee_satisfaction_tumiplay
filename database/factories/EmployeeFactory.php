@@ -24,7 +24,7 @@ class EmployeeFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'area' => $this->faker->randomElement(['Desarrollo', 'Marketing', 'Ventas', 'Administración']),
             'category' => $this->faker->randomElement(['Empleado', 'Directivo', 'Contratista']),
-            'company' => $this->faker->company,
+            'company_id' => \App\Models\Company::factory(), // Asegúrate de que esto genere un ID válido
             'satisfaction_level' => $this->faker->numberBetween(0, 100),
             'created_at' => now(),
             'updated_at' => now(),

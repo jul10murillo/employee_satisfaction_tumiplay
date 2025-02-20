@@ -18,9 +18,11 @@ return new class extends Migration
             $table->string('email');
             $table->string('area');
             $table->string('category');
-            $table->string('company');
+            $table->unsignedBigInteger('company_id'); // Cambiado a company_id
             $table->integer('satisfaction_level');
             $table->timestamps();
+
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 
