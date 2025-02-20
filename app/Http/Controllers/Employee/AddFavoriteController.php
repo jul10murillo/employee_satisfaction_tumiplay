@@ -14,6 +14,12 @@ class AddFavoriteController
         $this->employeeRepository = $employeeRepository;
     }
 
+    /**
+     * Add an employee to the user's favorites.
+     *
+     * @param int $id Employee ID
+     * @return JsonResponse
+     */
     public function __invoke(int $id): JsonResponse
     {
         return response()->json($this->employeeRepository->addFavorite($id));

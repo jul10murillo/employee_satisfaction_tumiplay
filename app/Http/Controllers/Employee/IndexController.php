@@ -14,6 +14,11 @@ class IndexController
         $this->employeeRepository = $employeeRepository;
     }
 
+    /**
+     * Get all employees.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function __invoke()
     {
         return $this->employeeRepository->getAllEmployees();
