@@ -1,66 +1,131 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Employee Satisfaction API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Esta API es el backend de la aplicación de seguimiento de la satisfacción de empleados. 
+Permite visualizar una lista de personas, buscar en ella utilizando cualquiera de sus propiedades y gestionar favoritos.
 
-## About Laravel
+Requisitos:
+- PHP 8.x
+- Composer
+- Laravel 8 o superior
+- MySQL/MariaDB (u otra base de datos compatible)
+- Node.js (para compilación de assets, si es necesario)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Instalación:
+1. Clonar el repositorio:
+   git clone https://github.com/jul10murillo/employee_satisfaction_tumiplay
+   cd tu_repositorio
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+2. Instalar dependencias de PHP:
+   composer install
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+3. Configurar el archivo .env:
+   cp .env.example .env
+   Edita el archivo `.env` con tus credenciales y configuraciones.
 
-## Learning Laravel
+4. Generar la clave de la aplicación:
+   php artisan key:generate
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+5. Ejecutar las migraciones y seeders:
+   php artisan migrate --seed
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+6. Iniciar el servidor de desarrollo:
+   php artisan serve
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Endpoints de la API:
+Todos los endpoints se agrupan bajo el prefijo `/api/v1/employees`.
 
-## Laravel Sponsors
+Empleados:
+- Obtener lista de empleados (con paginación):
+  GET /api/v1/employees?page=1
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- Buscar empleados:
+  GET /api/v1/employees/search?page=1&search=termino
 
-### Premium Partners
+Favoritos:
+- Agregar un empleado a favoritos:
+  POST /api/v1/employees/favorite
+  Content-Type: application/json
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+  Cuerpo de la petición:
+  {
+      "employee_id": 123
+  }
 
-## Contributing
+- Eliminar un empleado de favoritos:
+  DELETE /api/v1/employees/favorite/{employee}
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Obtener la lista de favoritos:
+  GET /api/v1/employees/favorites
 
-## Code of Conduct
+  La respuesta tendrá una estructura similar a:
+  {
+      "data": [
+          {
+              "id": 31,
+              "full_name": "Prof. Mae Pagac",
+              "email": "rwyman@example.com",
+              "area": "Ventas",
+              "category": "Directivo",
+              "satisfaction_level": 91,
+              "created_at": "2025-02-20 04:28:51",
+              "updated_at": "2025-02-20 04:28:51"
+          }
+      ],
+      "count": 1
+  }
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Notas Adicionales:
+- Manejo de Favoritos: La lógica de favoritos se maneja mediante endpoints que permiten agregar y eliminar empleados de la lista de favoritos. 
+  La API retorna un objeto JSON con un `status` (por ejemplo, "success" o "error") y un mensaje descriptivo.
+- Búsqueda y Paginación: La funcionalidad de búsqueda permite filtrar la lista de empleados utilizando cualquier propiedad, 
+  y la paginación se gestiona mediante parámetros de URL (`page` y `search`).
+- Migraciones y Seeders: Se incluyen migraciones para crear las tablas necesarias (empleados, empresas, favorites, etc.) y seeders 
+  para poblar la base de datos con datos de prueba.
 
-## Security Vulnerabilities
+Patrones de Diseño usados:
+-1. Patrón Repository
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Categoría: Patrón Arquitectural (Capa de Abstracción)
 
-## License
+Implementación en Laravel: EmployeeRepository.php
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Este patrón desacopla la lógica de acceso a datos de la lógica del negocio, lo que facilita la reutilización y el mantenimiento del código.
+
+Ejemplo aplicado:
+	•	Se usa la clase EmployeeRepository para encapsular todas las operaciones relacionadas con la entidad Employee.
+	•	La interfaz EmployeeRepositoryInterface define los métodos obligatorios.
+	•	Se inyecta en los controladores a través del constructor (Dependency Injection).
+	
+-2. Patrón Singleton
+
+Categoría: Creacional
+
+Implementación en Laravel: Cache de Favoritos (Cache::put())
+
+El patrón Singleton asegura que una clase tenga una única instancia en toda la aplicación. En este caso, se usa Cache::get() para almacenar y gestionar la lista de favoritos sin necesidad de acceder a la base de datos en cada solicitud.
+
+-3. Patrón Inyección de Dependencias
+
+Categoría: Principio SOLID (D - Dependency Inversion)
+
+Implementación en Laravel: Uso de Interfaces en los Controladores
+
+Laravel usa Service Container para inyectar dependencias automáticamente. En este caso, en los controladores, se inyecta la dependencia del repositorio en lugar de crear instancias manualmente.
+
+Ejemplo en AddFavoriteController.php
+
+-4. Patrón Factory
+
+Categoría: Creacional
+
+Implementación en Laravel: Uso de Factory en los seeders
+
+Laravel implementa el Patrón Factory en la creación de datos de prueba para las bases de datos. Se usa EmployeeFactory.php para generar empleados con datos falsos.
+
+-5. Patrón Resource/DTO (Data Transfer Object)
+
+Categoría: Estructural
+
+Implementación en Laravel: EmployeeResource.php
+
+Laravel usa Resources para formatear las respuestas de la API antes de enviarlas al frontend. Esto sigue el Patrón DTO, que encapsula y transforma los datos.
