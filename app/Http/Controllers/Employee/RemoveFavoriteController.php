@@ -23,6 +23,12 @@ class RemoveFavoriteController
      */
     public function __invoke(int $id): JsonResponse
     {
-        return response()->json($this->employeeRepository->removeFavorite($id));
+        $result = $this->employeeRepository->removeFavorite($id);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => $result['message'],
+            'favorites' => $result['favorites']
+        ]);
     }
 }
